@@ -29,17 +29,34 @@ public class InfoGetter {
     }
 
     public String[] getInfo() throws IOException, InterruptedException {
-        EbayPageParser ebayPageParser = new EbayPageParser(link, sb);
-        int tryCount = 15;
-        while (!ebayPageParser.parse()) {
-            connect();
-            tryCount--;
-            if (tryCount==0){
-                return new String[]{ebayPageParser.getName(), "Undefined", "Something wrong with this listing. Check it by yourself!", "Undefined"};
-            }
+        int tryCount = 20;
+        if (link.contains("ebay.com")) {
+            EbayPageParser ebayPageParser = new EbayPageParser(link, sb);
 
+            while (!ebayPageParser.parse()) {
+                connect();
+                tryCount--;
+                if (tryCount == 0) {
+                    return new String[]{ebayPageParser.getName(), "Undefined", "Something wrong with this listing. Check it by yourself!", "Undefined"};
+                }
+            }
+            return new String[]{ebayPageParser.getName(), ebayPageParser.getPrice(), ebayPageParser.getAvailability(), ebayPageParser.getPurchased()};
         }
-        return new String[]{ebayPageParser.getName(), ebayPageParser.getPrice(), ebayPageParser.getAvailability(), ebayPageParser.getPurchased()};
+
+        if (link.contains("walmart.com")) {
+            WalmartPageParser walmartPageParser = new WalmartPageParser(link, sb);
+            while (!walmartPageParser.parse()) {
+                connect();
+                tryCount--;
+                if (tryCount == 0) {
+                    return new String[]{walmartPageParser.getName(), "Undefined", "Something wrong with this listing. Check it by yourself!", "Undefined"};
+                }
+
+            }
+            return new String[]{walmartPageParser.getName(), walmartPageParser.getPrice(), walmartPageParser.getAvailability(), "Undefined"};
+        }
+
+        return new String[]{};
     }
 
 

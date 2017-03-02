@@ -21,13 +21,13 @@ public class ExcelWriter {
 
     private void writeCaption(){
         Row row = sheet.getRow(0);
-        Cell cell = row.createCell(7);
-        cell.setCellValue("Ebay name");
-        cell = row.createCell(8);
-        cell.setCellValue("Ebay price");
+        Cell cell = row.createCell(8);
+        cell.setCellValue("Name");
         cell = row.createCell(9);
-        cell.setCellValue("Availability");
+        cell.setCellValue("Price");
         cell = row.createCell(10);
+        cell.setCellValue("Availability");
+        cell = row.createCell(11);
         cell.setCellValue("Purchased");
     }
 
@@ -38,13 +38,13 @@ public class ExcelWriter {
         writeCaption();
         Row row = sheet.getRow(rowNumber);
 
-            Cell cell = row.createCell(7);
+            Cell cell = row.createCell(8);
             cell.setCellValue(resultsArray[0]);
-            cell = row.createCell(8);
-            cell.setCellValue(resultsArray[1]);
             cell = row.createCell(9);
-            cell.setCellValue(resultsArray[2]);
+            cell.setCellValue(resultsArray[1]);
             cell = row.createCell(10);
+            cell.setCellValue(resultsArray[2]);
+            cell = row.createCell(11);
             cell.setCellValue(resultsArray[3]);
 
 
