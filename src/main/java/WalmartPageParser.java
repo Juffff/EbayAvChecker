@@ -19,7 +19,12 @@ public class WalmartPageParser {
         String htmlString = sb.toString();
         Document document = Jsoup.parse(htmlString);
 
-        this.name = document.getElementsByTag("title").get(0).html().replace(" - Walmart.com","");
+        try {
+            this.name = document.getElementsByTag("title").get(0).html().replace(" - Walmart.com","");
+        }catch (IndexOutOfBoundsException e){
+            return false;
+        }
+
         System.out.println("Loading...");
         if (htmlString.contains("Out of stock")) {
             this.price = "Undefined";
@@ -31,7 +36,10 @@ public class WalmartPageParser {
                 int basePriceIndex = htmlString.indexOf("\"CURRENT\"");
                 int currencyIndex = basePriceIndex + htmlString.substring(basePriceIndex,htmlString.length()-1).indexOf(",\"currencyUnit\"");
                 String priceString = htmlString.substring(basePriceIndex,currencyIndex);
-                this.price = priceString.replace("\"CURRENT\":{\"priceType\":\"BASE\",\"price\":","").replace(".",",").replace("\"CURRENT\":{\"priceType\":\"ROLLBACK\",\"price\":","");
+                this.price = priceString.replace("\"CURRENT\":{\"priceType\":\"BASE\",\"price\":","").replace(".",",").replace("\"CURRENT\":{\"priceType\":\"ROLLBACK\",\"price\":","").
+                replace("\"CURRENT\":{\"price\":","").replace("\"CURRENT\":{\"priceType\":\"REDUCED\",\"price\":","").replace("\"CURRENT\":{\"priceType\":\"CLEARANCE\",\"price\":","");
+
+
                 return true;
             } catch (StringIndexOutOfBoundsException e) {
                 return false;

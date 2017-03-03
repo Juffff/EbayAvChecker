@@ -20,6 +20,7 @@ public class Main {
                     System.out.println("There is a problem with the file, may be breaks. Fix it! (" + f.getName() + ")");
                 } catch (Exception e) {
                     System.out.println("Invalid file format: " + f.getName());
+                    e.printStackTrace();
                 }
             }
         }
