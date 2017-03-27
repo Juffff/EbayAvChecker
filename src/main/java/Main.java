@@ -40,10 +40,14 @@ public class Main {
             ItemFromExcel itemFromExcel = itemFromExcelArrayList.get(j);
             System.out.println(itemFromExcel.getUrl());
             InfoGetter infoGetter = new InfoGetter(itemFromExcel.getUrl());
-            infoGetter.connect();
+            if(infoGetter.connect()){
             String[] resultsArray = infoGetter.getInfo();
             ExcelWriter excelWriter = new ExcelWriter(path);
-            excelWriter.writeResults(resultsArray, j + 1);
+            excelWriter.writeResults(resultsArray, j + 1);}
+            else {
+                ExcelWriter excelWriter = new ExcelWriter(path);
+                excelWriter.writeResults(new String[]{"BAD URL", "BAD URL", "BAD URL", "BAD URL"}, j + 1);
+            }
         }
     }
 }

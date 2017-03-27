@@ -10,26 +10,39 @@ public class InfoGetter {
     private URL url;
     private URLConnection connection;
     private StringBuilder sb = new StringBuilder();
+    private BufferedReader reader;
 
     public InfoGetter(String link) throws IOException {
         this.link = link;
     }
 
-    public void connect() throws IOException, InterruptedException {
+    public boolean connect() throws IOException, InterruptedException {
         this.url = new URL(link);
         this.connection = url.openConnection();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-        while (reader.ready()) {
-            String s = reader.readLine();
-            sb.append(s);
-        }
+        try {
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            while (reader.ready()) {
+                String s = reader.readLine();
+                sb.append(s);
+            }
+            reader.close();
+            return true;
+        } catch (IOException e){
+            System.out.println("Bad URL!");
+            e.printStackTrace();
+            System.out.println("Continue...");
+            return false;
+         }
 
-        reader.close();
+
+
     }
 
     public String[] getInfo() throws IOException, InterruptedException {
+
         int tryCount = 20;
+
         if (link.contains("ebay.com")) {
             EbayPageParser ebayPageParser = new EbayPageParser(link, sb);
 
